@@ -6,8 +6,8 @@ from sklearn.linear_model import Ridge, Lasso, ElasticNet
 from Estimator import EstimatorSelectionHelper as es
 from sklearn.model_selection import train_test_split
 
-X = p.read_csv("ppdData.csv")
-y = p.read_csv("target.csv")
+X = p.read_csv("ppdData.csv").drop(['Unnamed: 0'], axis=1)
+y = p.read_csv("target.csv").drop(['Unnamed: 0'], axis=1)
 
 pipelines = {
     'Ridge' : Pipeline([ ('ridge', Ridge()) ]),
