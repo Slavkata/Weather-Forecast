@@ -2,7 +2,7 @@ import numpy as np
 import pandas as p
 
 def main():
-    data = p.read_csv("3yearsData.csv")
+    data = p.read_csv("3_years_data.csv")
     data [['Date', 'Time']] = data.DateAndTime.str.split(expand = True)
     data.Date = removeYear(data)
     dicty = data[['Date', 'Time', 'T']]
@@ -15,7 +15,7 @@ def main():
     temp_data = dicty.Date.to_frame().apply(lambda x: p.Series(process(x, data_temp)), axis=1)
 
     result = p.concat([data_date, data_time, temp_data], axis=1)
-    result.iloc[:len(result.index) - 365].to_csv("ppdData.csv")
+    result.iloc[:len(result.index) - 365].to_csv("preprocessed_data.csv")
     data_temp.iloc[:len(data_temp.index) - 365].to_csv("target.csv")
 
 def removeYear(data):
