@@ -8,11 +8,10 @@ import requests
 import gzip
 from datetime import datetime, timedelta
 
-class OneDatePredictor:
+class FileSetupHelper:
     def __init__(self, date):
-        self.date = date
         self.end_date = date - timedelta(days=1)
-        self.start_date = date - timedelta(days=366)
+        self.start_date = date - timedelta(days=1069)
 
     def download_csv(self):
         start_date = self.start_date.strftime('%d.%m.%Y')
@@ -33,6 +32,11 @@ class OneDatePredictor:
         url = self.extract_url_from_response(r)
         urlretrieve(url, "data.gz")
 
+        self.extract_file("data.gz")
+        self.remove_rp5_metadata("data.csv")
+
+        return "data.csv"
+
     def produce_data_string(self, id, start_date, end_date, f1, f2, f3, p1, p2, ln):
         data = """wmo_id=%s&a_date1=%s&a_date2=%s&
             f_ed3=%s&f_ed4=%s&f_ed5=%s&f_pe=%s&f_pe1=%s&lng_id=%s""" % (id,
@@ -44,9 +48,9 @@ class OneDatePredictor:
         url = url.split('href=',1)[1].split('>D',1)[0].replace('../', '')
         return url
 
-    def extract_file(self, name):
-        arch = gzip.open(name, 'rb').read()
-        save = open(name, 'w')
+    def extract_file(self, file_name):
+        arch = gzip.open(file_name, 'rb').read()
+        save = open("data.csv", 'w')
         save.write(arch.decode('utf-8'))
         save.close()
 

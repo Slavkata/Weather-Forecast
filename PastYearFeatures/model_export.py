@@ -1,16 +1,21 @@
 import pandas as p
 import numpy as np
 from sklearn.externals import joblib
-from sklearn.linear_model import Ridge
 from sklearn.model_selection import train_test_split
 
-X = p.read_csv('ppdData.csv').drop(['Unnamed: 0'], axis=1)
-y = p.read_csv('target.csv').drop(['Unnamed: 0'], axis=1)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = 42)
+class ModelExport():
+    def __init__(self, model, X, y):
+        self.model = model
+        self.X = X
+        self.y = y
 
-est = Ridge(alpha=1, fit_intercept=True)
+    def split_data(self, test_size, random_state):
+        return train_test_split(self.X, self.y, test_size = test_size, random_state = random_state)
 
-est.fit(X_train, y_train)
-
-export = joblib.dump(est, 'past_year_features_export.plk')
+    def fit_and_export(self, name):
+        X_train, X_test, y_train, y_test = self.split_data(0.1, 42)
+        self.model.fit(X_train, y_train)
+        name += '.plk'
+        export = joblib.dump(self.model, name)
+        return name
