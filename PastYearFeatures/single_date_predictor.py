@@ -8,16 +8,15 @@ from model_export import ModelExport as me
 from file_setup_helper import FileSetupHelper as fsh
 
 def main():
-    file_name = fsh(sys.argv[1]).download_csv()
+    file_name = fsh(sys.argv[1], 366, 1).download_csv()
 
-    features_file_name, target_file_name = pd(file_name).preprocess()
+    features_file_name = pd(file_name).preprocess(False)
 
-    model = Ridge(alpha=1, fit_intercept=True)
     X_predict = p.read_csv(features_file_name).drop(['Unnamed: 0'], axis=1)
-    y_predict = p.read_csv(target_file_name).drop(['Unnamed: 0'], axis=1)
 
-    model_file_name = me(model, X, y).fit_and_export("ridge_export")
+    predictor = joblib.load(sys.argv[2])
 
-    predictor = joblib.load(model_file_name)
+    print(predictor.predict(X_predict))
 
-    print(predictor.predict())
+if __name__ == "__main__":
+    main()

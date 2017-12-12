@@ -8,10 +8,10 @@ import requests
 import gzip
 from datetime import datetime, timedelta
 
-class FileSetupHelper:
-    def __init__(self, date):
-        self.end_date = date - timedelta(days=1)
-        self.start_date = date - timedelta(days=1069)
+class FileSetupHelper():
+    def __init__(self, date, date_offset, training_flag):
+        self.end_date = date - timedelta(days=training_flag)
+        self.start_date = date - timedelta(days=date_offset)
 
     def download_csv(self):
         start_date = self.start_date.strftime('%d.%m.%Y')
