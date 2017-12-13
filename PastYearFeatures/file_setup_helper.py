@@ -4,14 +4,16 @@ from sklearn.externals import joblib
 from urllib.request import urlretrieve
 import os
 import sys
+import csv
 import requests
 import gzip
 from datetime import datetime, timedelta
 
 class FileSetupHelper():
     def __init__(self, date, date_offset, training_flag):
-        self.end_date = date - timedelta(days=training_flag)
-        self.start_date = date - timedelta(days=date_offset)
+        dt = datetime.strptime(date, "%d.%m.%Y")
+        self.end_date = dt - timedelta(days=training_flag)
+        self.start_date = dt - timedelta(days=date_offset)
 
     def download_csv(self):
         start_date = self.start_date.strftime('%d.%m.%Y')
@@ -33,7 +35,7 @@ class FileSetupHelper():
         urlretrieve(url, "data.gz")
 
         self.extract_file("data.gz")
-        self.remove_rp5_metadata("data.csv")
+        # self.remove_rp5_metadata("data.csv")
 
         return "data.csv"
 
@@ -55,7 +57,10 @@ class FileSetupHelper():
         save.close()
 
     def remove_rp5_metadata(self, file_path):
-        with open(file_path, 'r') as ifile:
-            line_list = ifile.readlines()
-        with open(file_path, 'w') as ofile:
-            ofile.writelines(line_list[6:])
+        with open(file_path, 'r', newline='') as ifile:
+            reader = csv.reader(ifile, delimiter=';', quotechar='|')
+            line_list = [l for l in reader]
+            line_list[6][0] = 'DateAndTime'
+        with open(file_path, 'w', newline='') as ofile:
+            writer = csv.writer(ofile, delimiter=';', quotechar='|')
+            writer.writerows(line_list[6:])

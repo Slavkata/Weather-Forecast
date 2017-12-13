@@ -2,7 +2,7 @@ import pandas as p
 import numpy as np
 from sklearn.linear_model import Ridge
 import sys
-from sklear,.externals import joblib
+from sklearn.externals import joblib
 from preprocess_data import PreprocessData as pd
 from model_export import ModelExport as me
 from file_setup_helper import FileSetupHelper as fsh
@@ -14,7 +14,7 @@ def main():
 
     X_predict = p.read_csv(features_file_name).drop(['Unnamed: 0'], axis=1)
 
-    predictor = joblib.load(sys.argv[2])
+    predictor = joblib.load(sys.argv[2] + '.plk')
 
     print(predictor.predict(X_predict))
 

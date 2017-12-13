@@ -2,25 +2,30 @@ import numpy as np
 import pandas as p
 
 class PreprocessData():
-    def __init__(self, name):
+    def __init__(self, file_name):
         self.file_name = file_name
 
     def get_date_time_t(self, file_name):
-        data = p.read_csv(file_name)
+        data = p.read_csv(file_name, skiprows=7, sep=';', header=None)
+        data.drop(data.columns[len(data.columns)-1], axis=1, inplace=True)
+        data.columns = ['DateAndTime', 'T', 'Po', 'P', 'Pa', 'U', 'DD', 'Ff', 'ff10',
+            'ff3', 'N', 'WW', 'W1', 'W2', 'Tn', 'Tx', 'Cl', 'Nh', 'H', 'Cm', 'Ch',
+            'VV', 'Td', 'RRR', 'tR', 'E', 'Tg', 'E\'', 'sss']
+        data.to_csv("test.csv")
         data [['Date', 'Time']] = data.DateAndTime.str.split(expand = True)
         data.Date = self.removeYear(data)
         return data[['Date', 'Time', 'T']]
 
-    def preprocess(training_flag):
+    def preprocess(self, training_flag):
         data = self.get_date_time_t(self.file_name)
         data_date = p.get_dummies(data.Date.to_frame())
         data_time = p.get_dummies(data.Time.to_frame())
-        data_target = dicty[['T']];
+        data_target = data[['T']];
 
         if training_flag:
-            temp_data = data.Date.to_frame().apply(lambda x: p.Series(training(x, data_target)), axis=1)
+            temp_data = data.Date.to_frame().apply(lambda x: p.Series(self.training(x, data_target)), axis=1)
         else:
-            temp_data = data.Date.to_frame().apply(lambda x: p.Series(predicting(x, data_target)), axis=1)
+            temp_data = data.Date.to_frame().apply(lambda x: p.Series(self.predicting(x, data_target)), axis=1)
 
         result = p.concat([data_date, data_time, temp_data], axis=1)
         result.iloc[:len(result.index) - 365].to_csv("features.csv")
@@ -31,19 +36,19 @@ class PreprocessData():
         else:
             return "features.csv"
 
-    def removeYear(data):
+    def removeYear(self, data):
         data [['Day', 'Month', 'Year']] = data.Date.str.split(pat = '.', expand = True)
         data.loc[:, 'Date'] = data[['Day', 'Month']].apply(lambda x: '.'.join(x), axis = 1)
         return data.Date
 
-    def application(row, temperature_data):
+    def training(self, row, temperature_data):
         after_drop = temperature_data.drop([row.name])
 
         if row.name + 365 <= len(after_drop.index):
             return after_drop.iloc[range(row.name, row.name + 365)].T.as_matrix()[0]
         return None
 
-    def application(row, temperature_data):
+    def predicting(self, row, temperature_data):
         if row.name + 365 <= len(temperature_data.index):
             return temperature_data.iloc[range(row.name, row.name + 365)].T.as_matrix()[0]
         return None

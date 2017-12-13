@@ -3,6 +3,8 @@ import numpy as np
 from file_setup_helper import FileSetupHelper as fsh
 from preprocess_data import PreprocessData as pd
 from model_export import ModelExport as me
+import sys
+from sklearn.linear_model import Ridge
 
 def main():
     file_name = fsh(sys.argv[1], 1069, 0).download_csv()
