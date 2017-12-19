@@ -10,13 +10,13 @@ from file_setup_helper import FileSetupHelper as fsh
 def main():
     file_name = fsh(sys.argv[1], 366, 1).download_csv()
 
-    features_file_name = pd(file_name).preprocess(False)
+    features_file_name = pd(file_name).preprocess(False, sys.argv[1])
 
     X_predict = p.read_csv(features_file_name).drop(['Unnamed: 0'], axis=1)
 
     predictor = joblib.load(sys.argv[2] + '.plk')
 
-    print(predictor.predict(X_predict))
+    p.DataFrame((predictor.predict(X_predict))).to_csv("predi.csv")
 
 if __name__ == "__main__":
     main()
