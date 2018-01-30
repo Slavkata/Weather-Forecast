@@ -6,6 +6,7 @@ class PreprocessData():
     def __init__(self, file_name):
         self.file_name = file_name
 
+    #get only used feature parameters
     def get_features(self, file_name):
         data = p.read_csv(file_name, skiprows=7, sep=';', header=None)
         data.drop(data.columns[len(data.columns)-1], axis=1, inplace=True)
@@ -17,6 +18,7 @@ class PreprocessData():
         data.Date = self.removeYear(data)
         return data[['Date', 'Time', 'T', 'Po', 'P', 'Pa', 'DD', 'Ff', 'N', 'Tn', 'Tx', 'VV', 'Td']]
 
+    #preprocess data in case of trining model or generating data to run prediction
     def preprocess(self, training_flag, predict_date):
         data = self.get_features(self.file_name)
         data_date = p.get_dummies(data.Date.to_frame())
@@ -43,8 +45,6 @@ class PreprocessData():
             date_string = ("Date_%02d.%02d") % (predict_date.day, predict_date.month)
             data_date[date_string] = 0
             data_date[new_date_string] = 1
-
-            #make it so we exclude time that has a 0 and is the same date as date_string
 
             result = p.concat([data_date, data_time, wind_direction, cloud_rate, temp_data], axis=1)
             result.iloc[:8].to_csv("test_f.csv")
