@@ -1,0 +1,77 @@
+body {
+  background: #1f3742;
+  font-family: Verdana;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.date {
+    background: url('date.png');
+    color: white;
+    padding-top: 20px;
+    margin-top: 200px;
+    width: 200px;
+    height: 27px;
+    text-align: center;
+    font-size: 16pt;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    font-family: fantasy;
+}
+
+.hour {
+    background: url('time.png');
+    color: white;
+    padding-top: 10px;
+    width: 200px;
+    height: 37px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 20pt;
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+    font-family: fantasy;
+}
+
+
+.temperature {
+    background: url('temp.png');
+    color: white;
+    width: 200px;
+    height: 119px;
+    margin-top: 20px;
+    font-size: 50pt;
+    font-weight: bold;
+    text-shadow: 2px 2px black;
+    padding-top: 50px;
+    font-family: fantasy;
+}
+
+.text {
+    width: 169px;
+    text-align: center;
+}
+
+.refresh_form {
+  width: 127px;
+  height: 44px;
+  padding-top: 50px;
+  margin: auto;
+}
+
+.refresh {
+  background: url('btn.png');
+  width: 127px;
+  border-radius: 5px;
+  height: 44px;
+}

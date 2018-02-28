@@ -1,0 +1,45 @@
+<%= stylesheet_link_tag "weather" %>
+
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+  <div class="row">
+      <div class="content">
+          <div class="date"> <%= @date %> </div>
+          <div class="hour"> <%= @time[4].to_s + ":00"%> </div>
+          <div class="temperature"> <div class="text"><%= @temperature[4] %></div> </div>
+      </div>
+
+      <div class="content">
+          <div class="date"> <%= @date %> </div>
+          <div class="hour"> <%= @time[3].to_s + ":00"%> </div>
+          <div class="temperature"> <div class="text"><%= @temperature[3] %></div> </div>
+      </div>
+
+      <div class="content">
+          <div class="date"> <%= @date %> </div>
+          <div class="hour"> <%= @time[2].to_s + ":00"%> </div>
+          <div class="temperature"> <div class="text"> <%= @temperature[2]%> </div> </div>
+      </div>
+
+      <div class="content">
+          <div class="date"> <%= @date %> </div>
+          <div class="hour"> <%= @time[1].to_s + ":00"%> </div>
+          <div class="temperature"> <div class="text"> <%= @temperature[1]%> </div> </div>
+      </div>
+
+      <div class="content">
+          <div class="date"> <%= @date %> </div>
+          <div class="hour"> <%= @time[0].to_s + ":00"%> </div>
+          <div class="temperature"> <div class="text"> <%= @temperature[0]%> </div> </div>
+      </div>
+  </div>
+
+  <form class="refresh_form" action="/weather/predict" method="get">
+    <input class="refresh" type="submit" value="">
+  </form>
+</body>
+</html>
