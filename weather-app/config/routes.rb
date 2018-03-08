@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post 'weather/index'
+  get 'weather/index'
 
   get 'weather/predict'
 
