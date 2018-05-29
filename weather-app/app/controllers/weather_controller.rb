@@ -16,14 +16,14 @@ class WeatherController < ApplicationController
     csv = CSV.read("./vendor/test_f.csv")
     @date = params['date']
     a = 0
-    for i in 366..373 do
+    for i in 366..381 do
        if csv[1][i].to_i == 1
          a = i
          break
        end
     end
 
-    a -= 365
+    a -= 373
     @time = []
     for i in 0..4 do
       @time.push(-1 + 3*(a - i))

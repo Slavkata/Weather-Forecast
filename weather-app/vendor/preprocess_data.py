@@ -25,7 +25,7 @@ class PreprocessData():
         cloud_rate = p.get_dummies(data.N.to_frame())
 
         data_target = data[['T']];
-        
+
         if training_flag:
             temp_data = data.Date.to_frame().apply(lambda x: p.Series(self.training(x, data_target)), axis=1)
             result = p.concat([data_date, data_time, wind_direction, cloud_rate, temp_data], axis=1)
@@ -76,7 +76,7 @@ class PreprocessData():
 
             for i in range(365):
                 count += 1
-                result = np.append(result, temperature_data.iloc[row.name + i*8])
+                result = np.append(result, temperature_data.iloc[i*8])
                 count = 0 if count == 8 else count
 
             return result
